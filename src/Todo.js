@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   InputBase,
   ListItem,
@@ -7,22 +8,17 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { DeleteOutline } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
 
 function Todo(props) {
-  //const item = state.item;
-  const [item, setItem] = useState(props.item);
   const [readOnly, setReadOnly] = useState(true);
-  const [del, setDel] = useState(props.del);
+  const { item, delete: deleteHandler } = props;
 
   const deleteEventHandler = () => {
-    delete(item);
+    deleteHandler(item);
   };
   const offReadOnlyMode = () => {
+    console.log("Event!", readOnly);
     setReadOnly(false);
-    useEffect(() => {
-      console.log();
-    }, [readOnly]);
   };
 
   const enterKeyEventHandler = (e) => {
@@ -31,24 +27,25 @@ function Todo(props) {
     }
   };
   const editEventHandler = (e) => {
-    const thisItem = item;
+    const thisItem = { ...item };
     thisItem.title = e.target.value;
-    setItem(thisItem);
+    props.setItem(thisItem);
   };
   const checkboxEventHandler = (e) => {
-    const thisItem = item;
+    console.log("check box event call");
+    const thisItem = { ...item };
     thisItem.done = thisItem.done ? false : true; // thisItemdone = !thisitem.done
-    setItem(item);
+    props.setItem(thisItem);
   };
 
   return (
     <ListItem>
-      <Checkbox checked={item.done} onChange={this.checkboxEventHandler} />
+      <Checkbox checked={item.done} onChange={checkboxEventHandler} />
       <ListItemText>
         <InputBase
           inputProps={{
             "aria-label": "naked",
-            readOnly: this.state.readOnly,
+            readOnly: readOnly,
           }}
           type="text"
           id={item.id}
@@ -56,14 +53,14 @@ function Todo(props) {
           value={item.title}
           multiline={true}
           fullWidth={true}
-          onClick={this.offReadOnlyMode}
-          onChange={this.editEventHandler}
-          onKeyDown={this.enterKeyEventHandler}
+          onClick={offReadOnlyMode}
+          onChange={editEventHandler}
+          onKeyDown={enterKeyEventHandler}
         />
       </ListItemText>
 
       <ListItemSecondaryAction>
-        <IconButton aria-label="Delete" onClick={this.deleteEventHandler}>
+        <IconButton aria-label="Delete" onClick={deleteEventHandler}>
           <DeleteOutline />
         </IconButton>
       </ListItemSecondaryAction>
