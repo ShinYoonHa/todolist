@@ -7,71 +7,66 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { DeleteOutline } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 
-class Todo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { item: props.item, readOnly: true }; //매개변수 item의 변수/값을 item에 대입
-    this.delete = props.delete;
-    this.update = props.update;
-  }
+function Todo(props) {
+  const [item, setItem] = props(useState(props.item));
+  const [readOnly, setReadOnly] = useState(true);
 
-  deleteEventHandler = () => {
-    this.delete(this.state.item);
+  const deleteEventHandler = () => {
+    props.delete(item);
   };
-  offReadOnlyMode = () => {
-    this.setState({ readOnly: false }, () => {
-      console.log("ReadOnly?", this.state.readOnly);
-    });
+  const offReadOnlyMode = () => {
+    setReadOnly(false);
   };
-  enterKeyEventHandler = (e) => {
+  const enterKeyEventHandler = (e) => {
     if (e.key === "Enter") {
-      this.setState({ readOnly: true });
+      setReadOnly(true);
+      props.update(item);
     }
   };
-  editEventHandler = (e) => {
-    const thisItem = this.state.item;
+  const editEventHandler = (e) => {
+    const thisItem = { ...item };
     thisItem.title = e.target.value;
-    this.setState({ item: thisItem });
+    setItem(thisItem);
   };
-  checkboxEventHandler = (e) => {
-    const thisItem = this.state.item;
-    thisItem.done = thisItem.done ? false : true; // thisItemdone = !thisitem.done
-    this.setState({ item: thisItem });
-    this.update(this.state.item);
-  };
-  render() {
-    const item = this.state.item;
-    return (
-      <ListItem>
-        <Checkbox checked={item.done} onChange={this.checkboxEventHandler} />
-        <ListItemText>
-          <InputBase
-            inputProps={{
-              "aria-label": "naked",
-              readOnly: this.state.readOnly,
-            }}
-            type="text"
-            id={item.id}
-            name={item.id}
-            value={item.title}
-            multiline={true}
-            fullWidth={true}
-            onClick={this.offReadOnlyMode}
-            onChange={this.editEventHandler}
-            onKeyDown={this.enterKeyEventHandler}
-          />
-        </ListItemText>
 
-        <ListItemSecondaryAction>
-          <IconButton aria-label="Delete" onClick={this.deleteEventHandler}>
-            <DeleteOutline />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    );
+  function checkboxEventHandler() {
+    const thisItem = { ...item };
+    thisItem.done = thisItem.done ? false : true; // thisItemdone = !thisitem.done
+    setItem(thisItem);
+    setReadOnly(true);
+    props.update(thisItem);
   }
+
+  return (
+    <ListItem>
+      <Checkbox checked={item.done} onChange={checkboxEventHandler} />
+      <ListItemText>
+        <InputBase
+          inputProps={{
+            "aria-label": "naked",
+            readOnly: readOnly,
+          }}
+          type="text"
+          id={item.id}
+          name={item.id}
+          value={item.title}
+          multiline={true}
+          fullWidth={true}
+          onClick={offReadOnlyMode}
+          onChange={editEventHandler}
+          onKeyDown={enterKeyEventHandler}
+        />
+      </ListItemText>
+
+      <ListItemSecondaryAction>
+        <IconButton aria-label="Delete" onClick={deleteEventHandler}>
+          <DeleteOutline />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
 }
 
 export default Todo;
