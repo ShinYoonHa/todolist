@@ -10,33 +10,36 @@ import {
 import { DeleteOutline } from "@material-ui/icons";
 
 function Todo(props) {
+  const [item, setItem] = useState(props.item);
   const [readOnly, setReadOnly] = useState(true);
-  const { item, delete: deleteHandler } = props;
 
   const deleteEventHandler = () => {
-    deleteHandler(item);
+    props.delete(item);
   };
   const offReadOnlyMode = () => {
-    console.log("Event!", readOnly);
     setReadOnly(false);
   };
 
   const enterKeyEventHandler = (e) => {
     if (e.key === "Enter") {
       setReadOnly(true);
+      props.update(item);
     }
   };
+
   const editEventHandler = (e) => {
     const thisItem = { ...item };
     thisItem.title = e.target.value;
-    props.setItem(thisItem);
+    setItem(thisItem);
   };
-  const checkboxEventHandler = (e) => {
-    console.log("check box event call");
+
+  function checkboxEventHandler() {
     const thisItem = { ...item };
     thisItem.done = thisItem.done ? false : true; // thisItemdone = !thisitem.done
-    props.setItem(thisItem);
-  };
+    setItem(thisItem);
+    setReadOnly(true);
+    props.update(thisItem);
+  }
 
   return (
     <ListItem>

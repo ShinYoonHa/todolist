@@ -1,19 +1,19 @@
 import { Button, Grid, Paper, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 
-function AddTodo(props) {
+function AddTodo({ add }) {
   const [item, setItem] = useState({ title: "" });
 
   const onInputChange = (e) => {
     const thisItem = { ...item }; // 객체를 복제하여 불변성 유지
     thisItem.title = e.target.value;
     setItem(thisItem);
-    console.log(thisItem);
+    //console.log(thisItem);
   };
 
   const onButtonClick = () => {
-    props.add(item);
-    setItem((item.title = "")); // text 값을 추가하고 입력 필드 초기화
+    add(item);
+    setItem({ title: "" }); // text 값을 추가하고 입력 필드 초기화
   };
 
   const enterKeyEventHandler = (e) => {
