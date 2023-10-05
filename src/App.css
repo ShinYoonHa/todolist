@@ -9,3 +9,9 @@
 .addBtn {
     background-color: rgb(251, 158, 174);
 }
+
+.passwordBtn {
+    position : relative;
+    left: 330px;
+    bottom: 45px;
+}

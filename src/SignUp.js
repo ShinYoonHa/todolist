@@ -6,10 +6,22 @@ import {
   Typography,
   Link,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { signup } from "./service/ApiService";
 
 function SignUp() {
+  const [showPassword, setShowPassword] = useState("password");
+
+  const handleShowPassword = () => {
+    setShowPassword(() => {
+      if (showPassword == "password") {
+        return "text";
+      } else {
+        return "password";
+      }
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -60,6 +72,7 @@ function SignUp() {
           <Grid item xs={12}>
             <TextField
               autoComplete="current-password"
+              type={showPassword}
               name="password"
               variant="outlined"
               required
@@ -68,6 +81,9 @@ function SignUp() {
               label="패스워드"
               autoFocus
             />
+            <Button className="passwordBtn" onClick={handleShowPassword}>
+              🔒
+            </Button>
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" color="primary">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Container,
@@ -8,8 +8,21 @@ import {
   Link,
 } from "@material-ui/core";
 import { signin } from "./service/ApiService";
+import "./App.css";
 
 function Login() {
+  const [showPassword, setShowPassword] = useState("password");
+
+  const handleShowPassword = () => {
+    setShowPassword(() => {
+      if (showPassword == "password") {
+        return "text";
+      } else {
+        return "password";
+      }
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
@@ -43,6 +56,7 @@ function Login() {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              type={showPassword}
               variant="outlined"
               required
               fullWidth
@@ -51,6 +65,9 @@ function Login() {
               name="password"
               autoComplete="password"
             />
+            <Button className="passwordBtn" onClick={handleShowPassword}>
+              🔒
+            </Button>
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" color="primary">
