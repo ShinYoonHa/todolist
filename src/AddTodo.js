@@ -1,5 +1,6 @@
 import { Button, Grid, Paper, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import "./App.css";
 
 function AddTodo({ add }) {
   const [item, setItem] = useState({ title: "" });
@@ -36,6 +37,7 @@ function AddTodo({ add }) {
         </Grid>
         <Grid xs={1} md={1} item>
           <Button
+            className="addBtn"
             fullWidth
             color="secondary"
             variant="outlined"

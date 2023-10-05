@@ -13,6 +13,7 @@ import {
 import AddTodo from "./AddTodo";
 import { call, signout } from "./service/ApiService";
 import DeleteChecked from "./DeleteChecked";
+import "./App.css";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -108,7 +109,11 @@ function App() {
           {Array.from(
             { length: Math.ceil(items.length / itemsPerPage) },
             (v, i) => (
-              <Button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+              <Button
+                className="pageBtn"
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+              >
                 {i + 1}
               </Button>
             )
