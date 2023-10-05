@@ -17,6 +17,8 @@ import DeleteChecked from "./DeleteChecked";
 function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   // add 함수 추가
   const add = (item) => {
@@ -51,10 +53,14 @@ function App() {
     });
   }, []);
 
-  var todoItems = items.length > 0 && (
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+
+  var todoItems = currentItems.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
-        {items.map((item, idx) => (
+        {currentItems.map((item, idx) => (
           <Todo
             item={item}
             key={item.id}
@@ -86,16 +92,30 @@ function App() {
 
   //loading 중이 아닐 때
   var todoListPage = (
-    <Grid justifyContent="center" container>
-      {navigationBar}
-      <Container maxWidth="md">
-        <AddTodo add={add} />
-        <div className="TodoList">{todoItems}</div>
-      </Container>
-      <Grid item>
-        <DeleteChecked deleteForCompleted={deleteForCompleted} />
+    <>
+      <Grid justifyContent="center" container>
+        {navigationBar}
+        <Container>
+          <AddTodo add={add} />
+          <div className="TodoList">{todoItems}</div>
+        </Container>
+        <Grid item>
+          <DeleteChecked deleteForCompleted={deleteForCompleted} />
+        </Grid>
       </Grid>
-    </Grid>
+      <Grid justifyContent="center" container>
+        <Grid item className="Pagination">
+          {Array.from(
+            { length: Math.ceil(items.length / itemsPerPage) },
+            (v, i) => (
+              <Button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+                {i + 1}
+              </Button>
+            )
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 
   //loading 중일 때
