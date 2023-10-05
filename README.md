@@ -1,4 +1,4 @@
-Change Class-Component to Function-Component
+Change Class-Component to Function-Component 
 
 
 💻Function: 
