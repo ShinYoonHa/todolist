@@ -29,9 +29,8 @@ export function call(api, method, request) {
       })
     )
     .catch((error) => {
-      console.log("Oops!");
-      console.log(error.status);
-      console.log("Oops!");
+      console.log("Oops! Oh no!!");
+
       if (error.status === 403) {
         window.location.href = "/login";
       }

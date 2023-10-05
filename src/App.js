@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import AddTodo from "./AddTodo";
 import { call, signout } from "./service/ApiService";
+import DeleteChecked from "./DeleteChecked";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -31,18 +32,24 @@ function App() {
     call("/todo", "PUT", item).then((response) => setItems(response.data));
   };
 
+  const deleteForCompleted = () => {
+    const thisItems = items;
+    thisItems.map((e) => {
+      //todoList 목록을 돌면서 '수행완료' 된 리스트 삭제
+      if (e.done === true) {
+        call("/todo", "DELETE", e).then((response) => {
+          setItems(response.data);
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     call("/todo", "GET", null).then((response) => {
       setItems(response.data);
       setLoading(false);
     });
   }, []);
-  // const componentDidMount = () => {
-  //   call("/todo", "GET", null).then(
-  //     (response) => setItems({ items: response.data }),
-  //     setLoading({ loading: false })
-  //   );
-  // };
 
   var todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
@@ -63,7 +70,7 @@ function App() {
   var navigationBar = (
     <AppBar position="static">
       <Toolbar>
-        <Grid justify-content="space-between" container>
+        <Grid justifyContent="space-between" container>
           <Grid item>
             <Typography variant="h6">오늘의 할 일</Typography>
           </Grid>
@@ -79,13 +86,16 @@ function App() {
 
   //loading 중이 아닐 때
   var todoListPage = (
-    <div>
+    <Grid justifyContent="center" container>
       {navigationBar}
       <Container maxWidth="md">
         <AddTodo add={add} />
         <div className="TodoList">{todoItems}</div>
       </Container>
-    </div>
+      <Grid item>
+        <DeleteChecked deleteForCompleted={deleteForCompleted} />
+      </Grid>
+    </Grid>
   );
 
   //loading 중일 때
