@@ -7,12 +7,13 @@ function AddTodo({ add }) {
   const onInputChange = (e) => {
     const thisItem = { ...item }; // 객체를 복제하여 불변성 유지
     thisItem.title = e.target.value;
-    setItem({ item: thisItem });
+    setItem(thisItem);
+    //console.log(thisItem);
   };
 
   const onButtonClick = () => {
     add(item);
-    setItem({ title: "" }); //text 값을 추가하고 입력 필드는 초기화시킨다
+    setItem({ title: "" }); // text 값을 추가하고 입력 필드 초기화
   };
 
   const enterKeyEventHandler = (e) => {

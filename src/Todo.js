@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   InputBase,
   ListItem,
@@ -7,10 +8,9 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { DeleteOutline } from "@material-ui/icons";
-import React, { useState } from "react";
 
 function Todo(props) {
-  const [item, setItem] = props(useState(props.item));
+  const [item, setItem] = useState(props.item);
   const [readOnly, setReadOnly] = useState(true);
 
   const deleteEventHandler = () => {
@@ -19,12 +19,14 @@ function Todo(props) {
   const offReadOnlyMode = () => {
     setReadOnly(false);
   };
+
   const enterKeyEventHandler = (e) => {
     if (e.key === "Enter") {
       setReadOnly(true);
       props.update(item);
     }
   };
+
   const editEventHandler = (e) => {
     const thisItem = { ...item };
     thisItem.title = e.target.value;
