@@ -1,0 +1,11 @@
+.pageBtn {
+    background-color: rgb(143, 188, 228);
+    color: rgb(69, 69, 69);
+    border-radius: 50%;
+    height: 60px;
+    margin: 2px;
+}
+
+.addBtn {
+    background-color: rgb(251, 158, 174);
+}
